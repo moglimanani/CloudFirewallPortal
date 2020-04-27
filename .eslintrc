@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "wesbos"
+  ],
+  "rules": {
+    "no-console": 2,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "comma-dangle": [
+          "error",
+          "never"
+        ],
+        "singleQuote": true,
+        "printWidth": 120,
+        "tabWidth": 2
+      }
+    ]
+  }
+}
