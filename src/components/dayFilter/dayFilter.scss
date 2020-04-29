@@ -1,0 +1,36 @@
+@import '../../variables.scss';
+
+.dayFilter {
+    padding: 0 15px;
+    margin: 0 5px;
+
+    &.ant-menu-horizontal {
+        .ant-menu-item {
+            font-size: 1em;
+
+            @media #{$max-md} {
+                font-size: 0.6em;
+                padding: 0 8px;
+            }
+
+            // @media #{$max-md-1078} {
+            //     font-size: 0.8em;
+            //     padding: 0 10px;
+            // }
+            @media #{$max-md-1258} {
+                font-size: 0.9em;
+                padding: 0 10px;
+            }
+        }
+
+        .ant-menu-item-selected {
+            color: #{$primary-green-color};
+            border-bottom: 2px solid #{$primary-green-color};
+        }
+
+        .ant-menu-item-active {
+            color: #{$primary-green-color};
+            border-bottom: 2px solid #{$primary-green-color};
+        }
+    }
+}

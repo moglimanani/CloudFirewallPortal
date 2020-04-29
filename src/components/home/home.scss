@@ -1,0 +1,14 @@
+@import '../../variables.scss';
+
+.page {
+    padding: 0px 10px;
+
+    &.homePage {
+        h2 {
+            font-size: 1em;
+            font-family: #{$poppinsBold};
+            padding: 20px 40px;
+            color: #{$primary-green-color};
+        }
+    }
+}

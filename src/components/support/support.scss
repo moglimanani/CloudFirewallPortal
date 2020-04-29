@@ -1,0 +1,30 @@
+.supportPage {
+    .ant-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .CRcard {
+        flex: 1;
+
+        .ant-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .title {
+                font-size: 1em;
+                font-weight: bold;
+                padding-bottom: 10px;
+            }
+
+            .rating {
+                background-color: #B3B3B3;
+                text-align: center;
+                padding: 30px;
+                font-size: 3em;
+                color: #192A3E;
+            }
+        }
+    }
+}

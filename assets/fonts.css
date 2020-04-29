@@ -1,0 +1,41 @@
+@font-face {
+    font-family: "poppins-medium";
+    src: local("poppins-medium"),
+        url("./fonts/Poppins-Medium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "poppins-regular";
+    src: local("poppins-regular"),
+        url("./fonts/Poppins-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "poppins-bold";
+    src: local("poppins-bold"),
+        url("./fonts/Poppins-Black.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "workSans-bold";
+    src: local("workSans-bold"),
+        url("./fonts/WorkSans-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "worksans-medium";
+    src: local("worksans-medium"),
+        url("./fonts/WorkSans-Medium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "poppins-semibold";
+    src: local("poppins-semibold"),
+        url("./fonts/Poppins-SemiBold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "poppins-light";
+    src: local("poppins-light"),
+        url("./fonts/Poppins-Light.otf") format("opentype");
+}

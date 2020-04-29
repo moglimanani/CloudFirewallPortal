@@ -1,0 +1,15 @@
+@import "../../variables.scss";
+
+.ant-breadcrumb {
+    display: flex;
+    padding: 13px 20px;
+    font-size: 1em;
+
+    .ant-breadcrumb-link,
+    .ant-breadcrumb-separator {
+        text-align: right;
+        font-family: #{$poppinsRegular};
+        font-size: 1em;
+        color: $primary-green-color;
+    }
+}

@@ -2,14 +2,26 @@ const HtmlWepackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const loader = require('sass-loader');
+const path = require('path');
 
 module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index_bundle.js',
+    publicPath: '/'
+  },
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        resolve: {
+          extensions: ['.js', '.jsx']
+        },
         use: {
           loader: 'babel-loader'
         }

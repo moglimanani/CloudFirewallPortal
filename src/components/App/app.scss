@@ -1,0 +1,68 @@
+@import "../../variables.scss";
+
+* {
+    background: transparent;
+    --antd-wave-shadow-color: none;
+
+    &:focus {
+        --antd-wave-shadow-color: transparent;
+        border: 0px transparent;
+        outline: 0px transparent;
+    }
+
+    &::selection {
+        --antd-wave-shadow-color: transparent;
+        border: 0px transparent;
+        outline: 0px transparent;
+        background-color: $primary-green-color;
+    }
+}
+
+
+body {
+    background: #E5E5E5;
+    font-family: #{$poppinsRegular};
+    font-size: #{$base-font-size};
+    max-width: #{$max-width};
+    margin: 0 auto;
+
+    .site-layout {
+        main {
+            display: flex;
+        }
+    }
+
+    .ant-layout-sider-trigger {
+        display: none;
+    }
+
+
+
+    .ant-menu-submenu-popup {
+        .ant-menu-item {
+
+            color: #fff !important;
+        }
+
+    }
+
+    .ant-tooltip {
+        &.ant-menu-inline-collapsed-tooltip {
+            .ant-tooltip-inner {
+                .imgBlock {
+                    display: none;
+                }
+            }
+        }
+    }
+
+
+
+    main {
+        &.ant-layout-content {
+            margin: 0;
+        }
+
+    }
+
+}

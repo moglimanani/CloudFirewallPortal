@@ -1,0 +1,274 @@
+@import '../../variables.scss';
+
+.mainSidebar {
+    background: #{$secondary-bg-color};
+    box-shadow: 2px 0px 7px grey;
+
+    &.ant-layout-sider-collapsed {
+        flex: 0 0 80px !important;
+        max-width: 80px !important;
+        min-width: 80px !important;
+        width: 80px !important;
+
+        .ant-layout-header {
+            cursor: pointer;
+
+
+
+            &.menuTrigger {
+                width: 100%;
+                text-align: center;
+                padding: 0;
+
+                .trigger {
+                    .imgBlock {
+                        width: 100%;
+                    }
+                }
+
+                span {
+                    display: none;
+                }
+
+                span[role="img"] {
+                    display: block;
+                }
+
+                img {
+                    width: 34px;
+                    ;
+                }
+            }
+        }
+
+        .logo {
+            padding: 0 !important;
+
+            .smallLogo {
+                display: block !important;
+                width: 80px !important;
+                padding-top: 10px;
+            }
+
+            .bigLogo {
+                display: none !important;
+            }
+        }
+
+        ul {
+            li {
+                padding: 0;
+                display: flex;
+
+                &.ant-menu-submenu {
+                    .ant-menu-submenu-title {
+                        width: 100%;
+
+                        div {
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .imgBlock {
+                    width: 100% !important;
+                }
+
+                span {
+                    display: none;
+                }
+
+                span.anticon {
+                    display: block;
+
+                }
+
+                &.ant-menu-submenu {
+                    & .ant-menu-submenu-title {
+                        padding: 0;
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    flex: 0 0 256px !important;
+    width: 256px !important;
+    min-width: 256px !important;
+    max-width: 256px !important;
+
+    .ant-layout-sider-children {
+
+        .logo {
+            display: flex;
+            padding: 17px 24px;
+            align-items: center;
+
+            .smallLogo {
+                display: none;
+            }
+
+            .bigLogo {
+                display: block;
+                width: 100%;
+            }
+
+
+            h2 {
+                font-family: #{$poppinsBold};
+                font-style: normal;
+                font-weight: bold;
+                font-size: 14px;
+                line-height: 21px;
+                letter-spacing: 0.2px;
+                text-transform: capitalize;
+                margin: 0 0 0 13px;
+                color: $primary-green-color;
+            }
+        }
+
+        ul {
+            background: #{$secondary-bg-color} !important;
+
+            li {
+                background: #{$secondary-bg-color} !important;
+                color: #{$primary-green-color};
+                display: flex;
+
+                &.ant-menu-submenu-active {
+                    & .ant-menu-submenu-arrow {
+                        opacity: 1;
+                        background: #{$primary-green-color};
+
+                        &:hover {
+                            background: #{$primary-green-color} !important;
+                        }
+
+                        &::before {
+                            background: #{$primary-green-color} !important;
+                        }
+
+                        &::after {
+                            background: #{$primary-green-color} !important;
+                        }
+                    }
+                }
+
+                ul {
+                    display: none;
+                    padding-left: 24px;
+
+                    li {
+                        padding-left: 40px !important;
+                    }
+                }
+
+
+                &.ant-menu-submenu-open {
+                    display: block;
+
+                    ul {
+                        display: block;
+                    }
+
+                    .ant-menu-submenu-title {
+                        margin: 0;
+                    }
+                }
+
+                .ant-menu-submenu-title {
+                    display: flex;
+                    margin: 0;
+
+                    &>div {
+                        display: flex;
+                    }
+
+                    .ant-menu-submenu-arrow {
+                        background: #{$primary-green-color};
+                        opacity: 1;
+
+                        &:hover {
+                            background: #{$primary-green-color};
+                        }
+
+                        &::before {
+                            background: #{$primary-green-color};
+                        }
+
+                        &::after {
+                            background: #{$primary-green-color};
+                        }
+                    }
+                }
+
+                &.ant-menu-item-selected {
+
+                    span {
+                        color: #{$primary-green-color};
+                    }
+                }
+
+                .imgBlock {
+                    width: 40px;
+                    text-align: center;
+                    font-size: 1.5em;
+
+                    img {
+                        width: 25px;
+                        height: 25px;
+                        // padding-right: 10px;
+                    }
+                }
+
+
+                span {
+                    color: #{$primary-green-color};
+                    margin-left: 8px;
+                    font-family: #{$poppinsMedium};
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+
+    .ant-layout-header {
+        cursor: pointer;
+        padding-left: 24px;
+
+        &.menuTrigger {
+            background: transparent;
+            bottom: 0;
+            position: absolute;
+            width: 100%;
+
+            .trigger {
+                display: flex;
+
+                .imgBlock {
+                    width: 40px;
+
+                    img {
+                        width: 35px;
+
+                    }
+                }
+
+                span {
+                    color: #{$primary-green-color};
+                    // font-size: 0.6em;
+                    font-family: #{$poppinsMedium};
+                    // color: #8E8F98;
+                    margin-left: 8px;
+                }
+            }
+
+
+
+
+
+        }
+    }
+}
