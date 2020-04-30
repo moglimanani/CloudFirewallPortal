@@ -1,7 +1,142 @@
+@import '../../variables.scss';
+
 .supportPage {
-    .ant-col {
+    &>.ant-col {
         display: flex;
         flex-direction: column;
+    }
+
+    h3 {
+        text-align: center;
+        font-family: $worksSansBold;
+    }
+
+    .tableSearch {
+        text-align: right;
+
+        .ant-input-search {
+            width: 290px;
+            border-radius: 15px;
+            margin: 10px 0;
+            color: $primary-darkgreen-color1;
+            line-height: 1em;
+            border-color: $primary-darkgreen-color1;
+            box-shadow: none;
+        }
+    }
+
+    .tableBlock {
+        padding: 40px;
+        padding: 10px 10px 10px 20px;
+
+        .tableHeader {
+            .customCard {
+                background: transparent;
+
+                .ant-card-body {
+                    padding: 10px 0;
+                }
+
+                .rating {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    .points {
+                        font-size: 20px;
+                        color: white;
+                        background: $primary-darkgreen-color1;
+                        padding: 15px;
+                        border-radius: 50%;
+                        font-family: $worksSansBold;
+                    }
+
+                    .remains {
+                        color: $primary-grey-color1;
+                    }
+
+
+                }
+
+                .buttonbar {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+
+            .flexColumn {
+                align-items: center;
+
+                button {
+                    margin: 10px;
+                }
+            }
+
+            .filterButtonBlocks {
+                justify-content: center;
+
+                .buttonbar {
+                    display: flex;
+                    align-items: center;
+                    /* justify-content: center; */
+                    margin-top: 30px;
+                }
+            }
+
+            .buttonbar {
+                // display: flex;
+                // justify-content: center;
+                // align-items: center;
+            }
+        }
+
+        .tableWrapper {
+            height: 400px;
+            overflow-y: scroll;
+
+            table {
+                border-spacing: 0;
+                border: 1px solid black;
+
+                .thead {
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    height: 250px;
+                }
+
+                .tr {
+                    :last-child {
+                        .td {
+                            border-bottom: 0;
+                        }
+                    }
+
+                    border-bottom: 1px solid black;
+                }
+
+                // .thead {
+                //     tr {
+                //         border: 1px solid black;
+                //     }
+                // }
+
+                .tbody {
+                    height: 200px;
+                    overflow-y: scroll;
+                }
+
+                // th {
+                //     position: -webkit-sticky;
+                //     /* Safari */
+                //     position: sticky;
+                //     top: 0;
+                //     background-color: grey;
+                //     border: 1px solid black;
+                // }
+            }
+
+        }
     }
 
     .CRcard {
@@ -12,18 +147,40 @@
             align-items: center;
             justify-content: center;
 
+            .ant-card {
+                border: 1px solid #f0f0f0;
+                box-shadow: 7px 3px 5px $primary-grey-color2;
+                border-radius: 15px;
+            }
+
             .title {
                 font-size: 1em;
                 font-weight: bold;
                 padding-bottom: 10px;
+                text-align: center;
+                font-family: #{$poppinsBold};
             }
 
             .rating {
-                background-color: #B3B3B3;
+                background-color: $primary-grey-color3;
                 text-align: center;
-                padding: 30px;
-                font-size: 3em;
+                padding: 10px;
+
                 color: #192A3E;
+                border-radius: 15px;
+
+                .points {
+                    font-weight: bold;
+                    font-family: #{$worksSansBold};
+                    font-size: 4em;
+                    color: $primary-darkgreen-color1;
+                }
+            }
+
+            .buttonbar {
+                padding: 20px;
+                display: flex;
+                justify-content: center;
             }
         }
     }

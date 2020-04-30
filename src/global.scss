@@ -1,0 +1,70 @@
+@import './variables.scss';
+
+.ant-btn-primary {
+    background-color: $primary-darkgreen-color1;
+    border-color: $primary-darkgreen-color1;
+    width: 170px;
+    font-family: $poppinsMedium;
+    border-radius: 15px;
+
+    &:active,
+    &:focus,
+    &:hover,
+    &.closed {
+        background-color: $primary-darkgreen-color1;
+        border-color: $primary-darkgreen-color1;
+    }
+
+
+    &.pending {
+        background-color: $primary-yellow-color1;
+        border-color: $primary-yellow-color1;
+        color: $primary-black-color1;
+    }
+
+    &.filterButton {
+        background-color: $primary-blue-color1;
+        border-color: $primary-blue-color1;
+        color: #fff;
+    }
+}
+
+table {
+    color: $primary-darkgreen-color1;
+    text-align: center;
+    font-size: 14px;
+}
+
+label,
+.customDropdown {
+    font-size: 14px;
+    box-shadow: none;
+    background: transparent;
+    margin: 0 10% 0 0;
+    width: 90%;
+    text-align: center;
+    font-family: $poppinsMedium;
+    // .css-yk16xz-control {
+
+    //     &:hover,
+    //     &:focus,
+    //     &:active {
+    //         border-color: $primary-blue-color1;
+    //         box-shadow: $primary-blue-color1;
+    //     }
+    // }
+}
+
+.textRight {
+    text-align: right;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.collon {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}

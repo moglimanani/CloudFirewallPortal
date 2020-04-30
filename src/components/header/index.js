@@ -9,12 +9,12 @@ function MainHeader() {
     <Header className="mainHeader">
       <Row>
         <Col span={12}>
-          <Input
+          {/* <Input
             placeholder=""
             size="large"
             className="bigSearch"
             prefix={<SearchOutlined className="site-form-item-icon" />}
-          />
+          /> */}
         </Col>
         <Col span={12}>
           {' '}

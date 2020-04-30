@@ -1,0 +1,67 @@
+@import '../../variables.scss';
+
+.formBlock {
+    .ant-row {
+        padding-top: 10px;
+
+        &.contents {
+            padding-top: 0
+        }
+    }
+
+    .heading {
+        font-size: 16px;
+        text-align: center;
+        font-family: $poppinsBold;
+        text-align: center;
+    }
+
+    .subHead {
+        font-size: 16px;
+        text-align: center;
+        font-family: $poppinsBold;
+        color: $primary-green-color2;
+        text-align: center;
+    }
+
+    .customDropdown,
+    .textbox {
+        width: 90%;
+        height: 40px;
+        color: $primary-darkgreen-color1;
+
+    }
+
+    .customDropdown {
+        &.circtuitDrop {
+            width: 250px;
+        }
+    }
+
+    .deleteButton {
+        width: 110px;
+        // border-radius: 0;
+        background-color: #ec1c1c !important;
+        border-color: #ec1c1c !important;
+
+        // span[role="img"] {
+        //     color: red;
+        // }
+
+    }
+
+    .textRight {
+        padding-right: 10px;
+    }
+
+    label {
+        margin: 0;
+        color: $primary-darkgreen-color1;
+        font-size: 14px;
+    }
+
+    .buttons {
+        text-align: right;
+        padding-right: 15px;
+    }
+}
