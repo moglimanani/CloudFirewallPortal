@@ -60,8 +60,42 @@
         font-size: 14px;
     }
 
+    .filterButton {
+        width: 100%;
+
+        &[disabled] {
+            background-color: $primary-grey-color2;
+            color: $primary-grey-color;
+            border-color: $primary-grey-color2;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: $primary-grey-color2;
+                color: $primary-grey-color;
+                border-color: $primary-grey-color2;
+            }
+        }
+    }
+
     .buttons {
         text-align: right;
-        padding-right: 15px;
+        padding-right: 5px;
+
+        .filterButton {
+            &[disabled] {
+                background-color: $primary-grey-color2;
+                color: $primary-grey-color;
+                border-color: $primary-grey-color2;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background-color: $primary-grey-color2;
+                    color: $primary-grey-color;
+                    border-color: $primary-grey-color2;
+                }
+            }
+        }
     }
 }

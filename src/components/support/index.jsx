@@ -210,7 +210,7 @@ function Support() {
       accessor: 'status'
     }
   ];
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] = React.useState(true);
   function openModal() {
     setIsOpen(true);
   }

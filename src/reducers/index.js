@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 import filterReducer from './filterReducer';
+import createCRReducer from './createCRreducer';
 
 const rootReducer = combineReducers({
-  filter: filterReducer
+  createCR: createCRReducer
 });
 
 export default rootReducer;
