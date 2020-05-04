@@ -3,7 +3,6 @@ import Select from 'react-select';
 
 function CustomDropDown(props) {
   const { selectedValue, options, customOnChangeEvent, name, isClearable, isSearchable, customClassName } = props;
-  console.log(333, name, selectedValue, options);
 
   return (
     <Select

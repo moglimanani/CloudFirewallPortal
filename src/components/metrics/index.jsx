@@ -25,6 +25,11 @@ function Metrics() {
             <DayFilter />
           </Col>
         </Row>
+        <Row className="map">
+          <Col span={24} className="column">
+            <div className="blocks"></div>
+          </Col>
+        </Row>
       </Col>
       <div className="filterMenus">
         {menuFilterOpen && (

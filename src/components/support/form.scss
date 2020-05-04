@@ -9,6 +9,21 @@
         }
     }
 
+    &.showForm {
+
+        .shownText {
+            font-size: 14px;
+            color: $primary-green-color1;
+            font-family: $worksSansBold;
+        }
+
+        .headings,
+        .contents,
+        .ant-row {
+            text-align: center;
+        }
+    }
+
     .heading {
         font-size: 16px;
         text-align: center;
@@ -62,6 +77,10 @@
 
     .filterButton {
         width: 100%;
+
+        &.submitButton {
+            width: 180px;
+        }
 
         &[disabled] {
             background-color: $primary-grey-color2;

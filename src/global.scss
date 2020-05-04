@@ -16,10 +16,40 @@
     }
 
 
-    &.pending {
+    &.newSButton {
         background-color: $primary-yellow-color1;
         border-color: $primary-yellow-color1;
         color: $primary-black-color1;
+        cursor: not-allowed;
+
+    }
+
+    &.closedSButton {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: #fff;
+        cursor: not-allowed;
+    }
+
+    &.rejectedSButton {
+        background-color: $primry-red-color;
+        border-color: $primry-red-color;
+        color: #fff;
+        cursor: not-allowed;
+    }
+
+    &.pendingSButton {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: #fff;
+        cursor: not-allowed;
+    }
+
+    &.cancelSButton {
+        background-color: $primary-grey-color;
+        border-color: $primary-grey-color;
+        color: #fff;
+        cursor: not-allowed;
     }
 
     &.filterButton {
@@ -44,15 +74,6 @@ label,
     width: 90%;
     text-align: center;
     font-family: $poppinsMedium;
-    // .css-yk16xz-control {
-
-    //     &:hover,
-    //     &:focus,
-    //     &:active {
-    //         border-color: $primary-blue-color1;
-    //         box-shadow: $primary-blue-color1;
-    //     }
-    // }
 }
 
 .textRight {
@@ -71,4 +92,14 @@ label,
 
 .ant-divider {
     margin: 24px 0 0 0;
+}
+
+.error {
+    border: 1px solid red;
+
+    &:focus,
+    &:hover,
+    &:active {
+        border: 1px solid red;
+    }
 }

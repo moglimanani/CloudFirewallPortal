@@ -18,7 +18,8 @@ const createRow = (
   deleteAppDetailsEvent
 ) => {
   const { type, category, status } = item;
-  const categoryOptions = type === 0 ? webCategory : applicationCategory;
+  // const categoryOptions = type === 0 ? webCategory : applicationCategory;
+  const categoryOptions = webCategory.filter(obj => obj.type === type);
   return (
     <Row className="row contents" key={i}>
       <Col span="7">

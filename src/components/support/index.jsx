@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Button, Row, Col, Card } from 'antd';
 import { PlusCircleOutlined, ClearOutlined } from '@ant-design/icons';
 import Modal from 'react-modal';
+import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
+import moment from 'moment';
 import ReactTableComponent from '../reactTable';
 import CustomBreadcrumb from '../breadcrumb';
 import CRForm from './form';
 import './support.scss';
+import { updateCRField } from '../../actions/createCR';
+import ShowCRForm from './showForm';
 
 Modal.setAppElement('body');
 const customStyles = {
@@ -23,6 +27,10 @@ const customStyles = {
 };
 
 const { Search } = Input;
+// const d= new Date();
+// const y= d.getFullYear();
+// const yearOptions = [];
+// while()
 const yearOptions = [
   { value: '2020', label: '2020' },
   { value: '2019', label: '2019' },
@@ -43,7 +51,10 @@ const monthOptions = [
   { value: '10', label: 'Nov' },
   { value: '11', label: 'Dec' }
 ];
-const statusOptions = [{ value: '0', label: 'Closed' }, { value: '1', label: 'Pending' }];
+const statusOptions = [
+  { value: '0', label: 'Closed' },
+  { value: '1', label: 'Pending' }
+];
 const customDropdownStyles = {
   option: (provided, state) => ({
     ...provided,
@@ -63,131 +74,48 @@ const customDropdownStyles = {
     return { ...provided, opacity, transition };
   }
 };
-
+const onShowHandler = (id, dispatch) => {
+  console.log(id);
+  dispatch(updateCRField({ showPopUp: true, showCRDetail: true, selectedCRRowId: id }));
+};
+const constructCrs = (data, ticketOptions, dispatch, setData, cid, onShowEvent) => {
+  const statusColors = {
+    '1': 'newSButton',
+    '2': 'pendingSButton',
+    '3': 'closedSButton',
+    '4': 'cancelSButton',
+    '5': 'rejectedSButton'
+  };
+  const cData = data.map(item => {
+    const crIdf = cid.filter(c => c.value === parseInt(item.circuit_id));
+    const crId = crIdf.length > 0 ? crIdf[0].label : '';
+    return {
+      id: item.cr_submission_id,
+      rDate: moment(item.raised_date).format('MMMM Do YYYY'),
+      crid: crId,
+      mess: (
+        <Button
+          type="primary"
+          className="showButton"
+          key={`show${item.cr_submission_id}`}
+          onClick={() => onShowEvent(item.cr_submission_id, dispatch)}
+        >
+          Show
+        </Button>
+      ),
+      status: (
+        <Button type="primary" className={`${statusColors[item.status_id]}`} key={item.cr_submission_id}>
+          {ticketOptions.length > 0 ? ticketOptions.filter(tickets => tickets.value === item.status_id)[0].label : 0}
+        </Button>
+      )
+    };
+  });
+  setData(cData);
+  dispatch(updateCRField({ totalTickets: cData.length }));
+};
 function Support() {
-  const data = [
-    {
-      id: 1,
-      rDate: '02/02/2020',
-      crid: 'CR1212',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 2,
-      rDate: '01/02/2020',
-      crid: 'CR1213',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="closed">
-          Closed
-        </Button>
-      )
-    },
-    {
-      id: 3,
-      rDate: '03/02/2020',
-      crid: 'CR1214',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="closed">
-          Closed
-        </Button>
-      )
-    },
-    {
-      id: 4,
-      rDate: '04/02/2020',
-      crid: 'CR1232',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="closed">
-          Closed
-        </Button>
-      )
-    },
-    {
-      id: 5,
-      rDate: '05/02/2020',
-      crid: 'CR1217',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 6,
-      rDate: '05/02/2020',
-      crid: 'CR1218',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 7,
-      rDate: '05/02/2020',
-      crid: 'CR1219',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 8,
-      rDate: '05/02/2020',
-      crid: 'CR1219',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 9,
-      rDate: '05/02/2020',
-      crid: 'CR1220',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 10,
-      rDate: '05/02/2020',
-      crid: 'CR1220',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    },
-    {
-      id: 11,
-      rDate: '05/02/2020',
-      crid: 'CR1222',
-      mess: 'Requesting ..',
-      status: (
-        <Button type="primary" className="pending">
-          Pending
-        </Button>
-      )
-    }
-  ];
+  const dispatch = useDispatch();
+
   const columns = [
     {
       Header: 'CR ID',
@@ -210,9 +138,15 @@ function Support() {
       accessor: 'status'
     }
   ];
-  const [modalIsOpen, setIsOpen] = React.useState(true);
+  const [data, setData] = useState([]);
+  const CR = useSelector(state => state.createCR);
+  useEffect(() => {
+    constructCrs(CR.allCrs, CR.ticketStatusOptions, dispatch, setData, CR.circuitIds, onShowHandler);
+  }, [CR.allCrs, CR.circuitIds, CR.ticketStatusOptions, dispatch]);
+
+  // useDispatch(updateCRField({ allCrs }));
   function openModal() {
-    setIsOpen(true);
+    dispatch(updateCRField({ showPopUp: true }));
   }
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -220,30 +154,14 @@ function Support() {
   }
 
   function closeModal() {
-    setIsOpen(false);
+    dispatch(updateCRField({ showPopUp: false, showCRDetail: false }));
   }
+
   return (
     <>
       <Row className="page supportPage">
         <Col span={24}>
           <CustomBreadcrumb breadLinks={['Support & CR', 'CR']} />
-          {/* <Row className="CRcard">
-            <Col span={24}>
-              <Card>
-                <div className="title">Apply for CR</div>
-                <div className="rating">
-                  <div className="points">7/10</div>
-                  <div className="remains">Remaining CR </div>
-                </div>
-                <div className="buttonbar">
-                  <Button type="primary" icon={<PlusCircleOutlined />} onClick={openModal}>
-                    Apply for CR{' '}
-                  </Button>
-                </div>
-                <div className="linkbar" />
-              </Card>
-            </Col>
-          </Row> */}
           <Row>
             <Col span={24}>
               <div className="tableBlock">
@@ -254,7 +172,7 @@ function Support() {
                       <Col>
                         <Card className="customCard">
                           <div className="rating">
-                            <div className="points">7/10</div>
+                            <div className="points">{CR.totalTickets}/10</div>
                             <div className="remains">Remaining CR </div>
                           </div>
 
@@ -281,6 +199,15 @@ function Support() {
                     <Row>
                       <Col span={6}>
                         <label htmlFor="year">Year</label>{' '}
+                        {/* <CustomDropDown
+                        customClassName="customDropdown circtuitDrop"
+                        selectedValue={circuitId}
+                        name="circuitIds"
+                        options={circuitIds}
+                        customOnChangeEvent={({ value }) => {
+                          dispatch(updateCircuitId(parseInt(value)));
+                        }}
+                      />{' '} */}
                         <Select
                           className="customDropdown"
                           defaultValue={yearOptions[0]}
@@ -322,9 +249,6 @@ function Support() {
                     </Row>
                   </Col>
                 </Row>
-                <div className="tableSearch">
-                  {/* <Search placeholder="" onSearch={value => console.log(value)} style={{ width: 200 }} /> */}
-                </div>
                 <ReactTableComponent columns={columns} data={data} />
               </div>
             </Col>
@@ -332,13 +256,14 @@ function Support() {
         </Col>
       </Row>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={CR.showPopUp}
         onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
+        onRequestClose={() => closeModal()}
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <CRForm />
+        {!CR.showCRDetail && <CRForm setIsOpen={() => closeModal()} />}
+        {CR.showCRDetail && <ShowCRForm closeModel={() => closeModal()} crs={CR} />}
       </Modal>
     </>
   );

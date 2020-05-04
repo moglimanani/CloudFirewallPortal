@@ -1,6 +1,8 @@
 @import '../../variables.scss';
 
 .supportPage {
+
+
     &>.ant-col {
         display: flex;
         flex-direction: column;
@@ -84,11 +86,7 @@
                 }
             }
 
-            .buttonbar {
-                // display: flex;
-                // justify-content: center;
-                // align-items: center;
-            }
+            .buttonbar {}
         }
 
         .tableWrapper {
@@ -115,25 +113,12 @@
                     border-bottom: 1px solid black;
                 }
 
-                // .thead {
-                //     tr {
-                //         border: 1px solid black;
-                //     }
-                // }
 
                 .tbody {
                     height: 200px;
                     overflow-y: scroll;
                 }
 
-                // th {
-                //     position: -webkit-sticky;
-                //     /* Safari */
-                //     position: sticky;
-                //     top: 0;
-                //     background-color: grey;
-                //     border: 1px solid black;
-                // }
             }
 
         }

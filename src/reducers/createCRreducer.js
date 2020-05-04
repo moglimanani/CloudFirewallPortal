@@ -1,5 +1,8 @@
 import createCRTypes from '../actions/createCRActionTypes';
 
+const d = new Date();
+const cmonth = d.getMonth();
+const cyear = d.getFullYear();
 const initialState = {
   totalRows: 0,
   MAXROWS: 50,
@@ -7,6 +10,7 @@ const initialState = {
   portDetails: [],
   applicationDetails: [],
   urlDetails: [],
+  fileDetails: [],
   ips: null,
   sandbox: null,
   shapping: null,
@@ -17,78 +21,41 @@ const initialState = {
     { value: 3, label: 'CX1236' },
     { value: 4, label: 'CX1237' }
   ],
-  portOutgoingOptions: [{ value: 0, label: 'Incoming' }, { value: 1, label: 'Outgoing' }],
-  portStatusOptions: [{ value: 0, label: 'Blocked' }, { value: 1, label: 'Allowed' }],
-  webAppOptions: [{ value: 0, label: 'Web' }, { value: 1, label: 'Application' }],
+  portOutgoingOptions: [],
+  portStatusOptions: [],
+  webAppOptions: [],
   //   hackOptions: [{ value: 0, label: 'Hacking' }],
-  fileOptions: [
-    { value: 1, label: '.afl' },
-    { value: 2, label: '.avi' },
-    { value: 3, label: '.bin' },
-    { value: 4, label: '.c' },
-    { value: 5, label: '.c++' },
-    { value: 6, label: '.dvi' },
-    { value: 7, label: '.exe' },
-    { value: 8, label: '.m1v' },
-    { value: 9, label: '.m2a' },
-    { value: 10, label: '.m2v' },
-    { value: 11, label: '.mov' },
-    { value: 12, label: '.movie' },
-    { value: 13, label: '.mp2' },
-    { value: 14, label: '.mp3' },
-    { value: 15, label: '.mpa' },
-    { value: 16, label: '.mpe' },
-    { value: 17, label: '.mpeg' },
-    { value: 18, label: '.mpg' },
-    { value: 19, label: '.mpga' },
-    { value: 20, label: '.mv' },
-    { value: 21, label: '.qif' },
-    { value: 22, label: '.qt' },
-    { value: 23, label: '.rm' },
-    { value: 24, label: '.rmm' },
-    { value: 25, label: '.rmp' },
-    { value: 26, label: '.rnx' },
-    { value: 27, label: '.rp' },
-    { value: 28, label: '.rpm' }
+  fileOptions: [],
+  webCategory: [],
+  applicationCategory: [],
+  domainOptions: [
+    { value: 0, label: 'http' },
+    { value: 1, label: 'https' }
   ],
-  webCategory: [
-    { value: 1, label: 'Anonymizers' },
-    { value: 2, label: 'Criminal Activity' },
-    { value: 3, label: 'Command & Control' },
-    { value: 4, label: 'Intolerance & Hate' },
-    { value: 5, label: 'Nudity' },
-    { value: 6, label: 'Peer-to-peer & torrent' },
-    { value: 7, label: 'Phishing & Fraud' },
-    { value: 8, label: 'Sexually Explicit' },
-    { value: 9, label: 'Spam URLs' },
-    { value: 10, label: 'Spyware & Malware' },
-    { value: 11, label: 'Weapons ' },
-    { value: 12, label: 'Controlled substances' },
-    { value: 13, label: 'Extreme' },
-    { value: 14, label: 'HTTPUpload' },
-    { value: 15, label: 'Hacking' },
-    { value: 16, label: 'Live audio' },
-    { value: 17, label: 'Live video' },
-    { value: 18, label: 'Marijuana' },
-    { value: 19, label: 'Militancy & Extremist' },
-    { value: 20, label: 'Pro-Suicide & Self-Harm' }
-  ],
-  applicationCategory: [
-    { value: 1, label: 'Proxy and Tunnel' },
-    { value: 2, label: 'Download Applications' },
-    { value: 3, label: 'File Transfer' },
-    { value: 4, label: 'Gaming' },
-    { value: 5, label: 'Instant Messenger' },
-    { value: 6, label: 'Remote Access' },
-    { value: 7, label: 'Streaming Media' }
-  ],
+  protocolOptions: [],
   currentPortDetails: { type: null, port: null, status: null },
-  currentApplicationDetails: { type: null, category: null, status: null }
+  currentApplicationDetails: { type: null, category: null, status: null },
+  curretURLDetails: null,
+  currentFileDetails: { type: null, status: null },
+  filters: {
+    userId: 1,
+    sMonth: cmonth + 1,
+    sYear: cyear,
+    sstatus: 1
+  },
+  allCrs: [],
+  ticketStatusOptions: [],
+  totalTickets: 0,
+  showPopUp: false,
+  showCRDetail: false,
+  selectedCRRowId: null
 };
 export default function(state = initialState, action) {
   switch (action.type) {
     case createCRTypes.UPDATE_CIRCUIT_ID:
       return { ...state, circuitId: action.payload.id };
+    case createCRTypes.UPDATE_CR_FIELD:
+      return { ...state, ...action.payload };
     case createCRTypes.UPDATE_CURRENT_PORT_DETAIL: {
       const updatedCurCircuitPortDetails = Object.assign({}, state.currentPortDetails, { ...action.payload });
       return { ...state, currentPortDetails: updatedCurCircuitPortDetails };
@@ -138,7 +105,76 @@ export default function(state = initialState, action) {
       });
       return { ...state, applicationDetails: updatedAppDetails };
     }
+    case createCRTypes.UPDATE_CURRENT_URL_DETAIL:
+      return { ...state, curretURLDetails: action.payload.url };
+    case createCRTypes.RESET_CURRENT_URL_DETAIL:
+      return { ...state, curretURLDetails: initialState.curretURLDetails };
+    case createCRTypes.ADD_URL_DETAILS:
+      return {
+        ...state,
+        urlDetails: [...state.urlDetails, action.payload]
+      };
+    case createCRTypes.UPDATE_URL_DETAILS: {
+      const updatedURLDetails = state.urlDetails.map((item, i) => {
+        if (i === action.payload.id) return action.payload.data;
+        return item;
+      });
+      return {
+        ...state,
+        urlDetails: updatedURLDetails
+      };
+    }
+    case createCRTypes.DELETE_URL_DETAILS: {
+      const updatedURLDetails = state.urlDetails.filter((item, i) => {
+        if (i === action.payload.id) return false;
+        return true;
+      });
+      return {
+        ...state,
+        urlDetails: updatedURLDetails
+      };
+    }
+    case createCRTypes.UPDATE_CURRENT_FILE_DETAIL: {
+      const updatedCuraFileDetails = Object.assign({}, state.currentFileDetails, { ...action.payload });
+      return { ...state, currentFileDetails: updatedCuraFileDetails };
+    }
+    case createCRTypes.ADD_FILE_DETAILS:
+      return { ...state, fileDetails: [...state.fileDetails, action.payload] };
 
+    case createCRTypes.DELETE_FILE_DETAILS: {
+      const toDeleteFileDetails = [...state.fileDetails];
+
+      toDeleteFileDetails.splice(action.payload.id, 1);
+      return { ...state, fileDetails: toDeleteFileDetails };
+    }
+    case createCRTypes.RESET_CURRENT_FILE_DETAIL:
+      return { ...state, currentFileDetails: initialState.currentFileDetails };
+    case createCRTypes.RESET_CR_REQUEST:
+      return {
+        ...state,
+        totalRows: initialState.totalRows,
+        circuitId: initialState.circuitId,
+        portDetails: initialState.portDetails,
+        applicationDetails: initialState.applicationDetails,
+        urlDetails: initialState.urlDetails,
+        fileDetails: initialState.fileDetails,
+        ips: initialState.ips,
+        sandbox: initialState.sandbox,
+        shapping: initialState.shapping,
+        spam: initialState.spam,
+        currentPortDetails: initialState.currentPortDetails,
+        currentApplicationDetails: initialState.currentApplicationDetails,
+        curretURLDetails: initialState.curretURLDetails,
+        currentFileDetails: initialState.currentFileDetails
+      };
+
+    case createCRTypes.UPDATE_FILE_DETAILS: {
+      const updatedFileDetails = state.fileDetails.map((item, i) => {
+        if (i === action.payload.id) return Object.assign({}, { ...item }, { ...action.payload.data });
+        return item;
+      });
+      return { ...state, fileDetails: updatedFileDetails };
+    }
     default:
       return { ...state };
   }

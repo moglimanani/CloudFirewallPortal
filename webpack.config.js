@@ -36,12 +36,6 @@ module.exports = {
         test: /\.(css|scss)$/,
         use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
-      // {
-      //   test: /\.(jpg|png)$/,
-      //   use: {
-      //     loader: 'url-loader'
-      //   }
-      // },
       {
         test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
         // loader: 'images/file-loader?name=[name].[ext]' // <-- retain original file name
@@ -50,10 +44,6 @@ module.exports = {
           name: 'assets/images/[name].[ext]'
         }
       }
-      // {
-      //   test: /\.svg$/,
-      //   use: ['@svgr/webpack', 'url-loader']
-      // }
     ]
   },
   plugins: [

@@ -9,6 +9,31 @@
     display: flex;
     flex: 1;
 
+    .map {
+
+
+        .column {
+            padding: 20px;
+            height: 300px;
+
+            &:first-child {
+
+
+                .blocks {}
+            }
+
+            height: 300px;
+
+
+            .blocks {
+                display: flex;
+                background-color: $primary-green-color3;
+                border-radius: 15px;
+                height: 300px;
+            }
+        }
+    }
+
     .filterMenus {
         font-family: #{$poppinsMedium};
         position: absolute;

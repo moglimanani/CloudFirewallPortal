@@ -1,29 +1,46 @@
 import React from 'react';
 import { Row, Col, Input, Divider, Button, InputNumber } from 'antd';
-import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import Select from 'react-select';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import _ from 'lodash';
+import axios from 'axios';
 import CustomDropDown from '../customDropdown';
+import { isUrlValid, getCRS } from '../../helper';
+import { baseUrl } from '../../config';
+
 import {
   updateCircuitId,
   updateCurrentPortDetails,
   updateCurrentAppDetails,
   resetCurrentAppDetails,
   increaseTotalRows,
+  decreaseTotalRows,
   resetCurrentPortDetails,
   addPortDetails,
   deletePortDetails,
   updatePortDetails,
   addAppDetails,
   updateAppDetails,
-  deleteAppDetails
+  deleteAppDetails,
+  updateCurrentURLDetails,
+  addCurrentURLDetails,
+  resetURLDetails,
+  updateURLDetails,
+  deleteUrlDetails,
+  updateCurrentFileDetails,
+  resetCurrentFileDetails,
+  addCurrentFileDetails,
+  updateFileDetails,
+  deleteFileDetails,
+  updateCRField,
+  resetCR
 } from '../../actions/createCR';
+import UrlDetails from './urlDetails';
 import PortDetails from './portDetails';
 import AppDetails from './appDetails';
+import FileDetails from './fileDetails';
 import './form.scss';
 
-function CRForm() {
+function CRForm(props) {
   const createCR = useSelector(state => state.createCR);
   const dispatch = useDispatch();
   const {
@@ -40,7 +57,16 @@ function CRForm() {
     currentApplicationDetails,
     webCategory,
     applicationCategory,
-    applicationDetails
+    applicationDetails,
+    curretURLDetails,
+    urlDetails,
+    currentFileDetails,
+    fileDetails,
+    ips,
+    sandbox,
+    shapping,
+    spam,
+    filters
   } = createCR;
   const portDetailButtonDisable =
     MAXROWS <= totalRows ||
@@ -48,16 +74,19 @@ function CRForm() {
     currentPortDetails.port === null ||
     currentPortDetails.port.length === 0 ||
     currentPortDetails.status === null;
+  const urlDetailButtonDisable = MAXROWS <= totalRows || !isUrlValid(curretURLDetails);
   const appDetailButtonDisable =
     MAXROWS <= totalRows ||
     currentApplicationDetails.type === null ||
     currentApplicationDetails.category === null ||
     currentApplicationDetails.status === null;
-  console.log(currentApplicationDetails);
+  const fileDetailButtonDisable =
+    MAXROWS <= totalRows || currentFileDetails.type === null || currentFileDetails.status === null;
   let currAppCat = [];
-  const webAppCatOpt = [webCategory, applicationCategory];
+  // const webAppCatOpt = [webCategory, applicationCategory];
   if (currentApplicationDetails.type !== null) {
-    currAppCat = webAppCatOpt[currentApplicationDetails.type];
+    // currAppCat = webAppCatOpt[currentApplicationDetails.type];
+    currAppCat = webCategory.filter(item => item.type === currentApplicationDetails.type);
   }
 
   const addPortDetailsHandler = () => {
@@ -74,15 +103,98 @@ function CRForm() {
   const updatePortDetailsHandler = ({ id, data }) => {
     dispatch(updatePortDetails(id, data));
   };
+
   const deletePortDetailsHandler = id => {
+    dispatch(decreaseTotalRows());
     dispatch(deletePortDetails(id));
   };
   const updateAppDetailsHandler = ({ id, data }) => {
     dispatch(updateAppDetails(id, data));
   };
   const deleteAppDetailsHandler = id => {
+    dispatch(decreaseTotalRows());
     dispatch(deleteAppDetails(id));
   };
+  const updateCurrentURLDetailsHandler = value => {
+    dispatch(updateCurrentURLDetails({ url: value }));
+  };
+  const addURLDetailsHandler = () => {
+    dispatch(increaseTotalRows());
+    dispatch(addCurrentURLDetails(curretURLDetails));
+    dispatch(resetURLDetails());
+  };
+  const updateURLDetailsHandler = obj => {
+    dispatch(updateURLDetails(obj));
+  };
+  const deleteUrlDetailsHandler = obj => {
+    dispatch(decreaseTotalRows());
+    dispatch(deleteUrlDetails(obj));
+  };
+  const updateCurrentFileDetailsHandler = obj => {
+    dispatch(updateCurrentFileDetails(obj));
+  };
+  const addFileDetailsHandler = () => {
+    dispatch(increaseTotalRows());
+    dispatch(addCurrentFileDetails(currentFileDetails));
+    dispatch(resetCurrentFileDetails());
+  };
+  const updateFileDetailsHandler = obj => {
+    dispatch(updateFileDetails(obj));
+  };
+  const deleteFileDetailsHandler = obj => {
+    dispatch(decreaseTotalRows());
+    dispatch(deleteFileDetails(obj));
+  };
+  const updateCRFieldHandler = obj => {
+    dispatch(updateCRField(obj));
+  };
+  const sendCRHandler = (closePopUp, filtersF, getCRSM) => {
+    const obj = {
+      userId: 1,
+      circuitId,
+      portDetails,
+      applicationDetails,
+      urlDetails,
+      fileDetails,
+      ips,
+      sandbox,
+      shapping,
+      spam
+    };
+    axios({
+      method: 'post',
+      url: '/cr/create_cr/',
+      baseURL: baseUrl,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      data: obj
+    })
+      .then(res => {
+        if (!res.data.error) {
+          const paramsF = {
+            user_id: filtersF.userId,
+            month: filtersF.sMonth,
+            year: filtersF.sYear,
+            status: filtersF.sstatus
+          };
+          getCRSM('/cr/getcr/', '', dispatch, paramsF, updateCRField);
+          dispatch(resetCR());
+          closePopUp(false);
+        }
+      })
+      .catch(error => {});
+  };
+  const submitButtonDisable =
+    circuitId === null ||
+    circuitId === '' ||
+    (portDetails.length === 0 &&
+      applicationDetails.length === 0 &&
+      urlDetails.length === 0 &&
+      fileDetails.length === 0 &&
+      ips === null &&
+      sandbox === null &&
+      shapping === null &&
+      spam === null);
+
   return (
     <Row className="formBlock">
       <Col span={24}>
@@ -221,15 +333,7 @@ function CRForm() {
                     name="webApllicationType"
                     options={webAppOptions}
                     customOnChangeEvent={({ value }) => dispatch(updateCurrentAppDetails({ type: parseInt(value) }))}
-                  />{' '}
-                  {/* <Select
-                    className="customDropdown"
-                    defaultValue={null}
-                    isClearable={false}
-                    isSearchable={false}
-                    name="webApllication"
-                    options={webAppOptions}
-                  />{' '} */}
+                  />
                 </Col>
                 <Col span="7">
                   <CustomDropDown
@@ -292,6 +396,11 @@ function CRForm() {
           <Divider />
           <Row className="block">
             <Col span={24}>
+              <UrlDetails
+                updateURLDetailsHandler={updateURLDetailsHandler}
+                deleteUrlDetailsHandler={deleteUrlDetailsHandler}
+                urlDetails={urlDetails}
+              />
               <Row className="row">
                 <Col span={24}>
                   <Row>
@@ -300,21 +409,35 @@ function CRForm() {
                       <span className="collon">:</span>
                     </Col>
                     <Col span={18}>
-                      <Input placeholder="Enter Port" className="textbox" />
+                      <Input
+                        placeholder="Enter URL"
+                        className="textbox"
+                        onChange={e => updateCurrentURLDetailsHandler(e.target.value)}
+                        value={curretURLDetails}
+                      />
                     </Col>
                     <Col span={3}>
                       {' '}
-                      <Button type="primary" icon={<DeleteOutlined />} className="filterButton deleteButton">
+                      <Button
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        className="filterButton"
+                        disabled={urlDetailButtonDisable}
+                        onClick={() => addURLDetailsHandler()}
+                      >
+                        Add New{' '}
+                      </Button>
+                      {/* <Button type="primary" icon={<DeleteOutlined />} className="filterButton deleteButton">
                         {' '}
                         Delete
-                      </Button>
+                      </Button> */}
                     </Col>
                   </Row>
                   <Row>
                     <Col className="buttons" span={24}>
-                      <Button type="primary" icon={<PlusCircleOutlined />} className="filterButton">
+                      {/* <Button type="primary" icon={<PlusCircleOutlined />} className="filterButton">
                         Add New{' '}
-                      </Button>
+                      </Button> */}
                     </Col>
                   </Row>
                 </Col>
@@ -336,42 +459,65 @@ function CRForm() {
                 </Col>
                 <Col span="3" />
               </Row>
+              <FileDetails
+                fileDetails={fileDetails}
+                portStatusOptions={portStatusOptions}
+                fileOptions={fileOptions}
+                updateFileDetailsHandler={obj => updateFileDetailsHandler(obj)}
+                deleteFileDetailsHandler={obj => deleteFileDetailsHandler(obj)}
+              />
               <Row className="row contents">
                 <Col span="1" />
                 <Col span="10">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={currentFileDetails.type}
+                    name="fileType"
+                    options={fileOptions}
+                    customOnChangeEvent={({ value }) => updateCurrentFileDetailsHandler({ type: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="webApllication"
                     options={fileOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
 
                 <Col span="10">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={currentFileDetails.status}
+                    name="fileStatus"
+                    options={portStatusOptions}
+                    customOnChangeEvent={({ value }) => updateCurrentFileDetailsHandler({ status: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="filterMonth"
                     options={portStatusOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
                 <Col span={3}>
                   {' '}
-                  <Button type="primary" icon={<DeleteOutlined />} className="filterButton deleteButton">
-                    {' '}
-                    Delete
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="buttons" span={24}>
-                  <Button type="primary" icon={<PlusCircleOutlined />} className="filterButton">
+                  <Button
+                    type="primary"
+                    icon={<PlusCircleOutlined />}
+                    className="filterButton"
+                    disabled={fileDetailButtonDisable}
+                    onClick={() => addFileDetailsHandler()}
+                  >
                     Add New{' '}
                   </Button>
+                  {/* <Button type="primary" icon={<DeleteOutlined />} className="filterButton deleteButton">
+                    {' '}
+                    Delete
+                  </Button> */}
                 </Col>
               </Row>
             </Col>
@@ -386,14 +532,21 @@ function CRForm() {
                   </label>
                 </Col>
                 <Col span="6">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={ips}
+                    name="ips"
+                    options={portStatusOptions}
+                    customOnChangeEvent={({ value }) => updateCRFieldHandler({ ips: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="filterMonth"
                     options={portStatusOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
                 <Col span="6" className="textRight">
                   <label htmlFor="portsDir">
@@ -401,14 +554,21 @@ function CRForm() {
                   </label>
                 </Col>
                 <Col span="6">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={sandbox}
+                    name="sandbox"
+                    options={portStatusOptions}
+                    customOnChangeEvent={({ value }) => updateCRFieldHandler({ sandbox: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="filterMonth"
                     options={portStatusOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
               </Row>
             </Col>
@@ -420,14 +580,21 @@ function CRForm() {
                   </label>
                 </Col>
                 <Col span="6">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={shapping}
+                    name="shapping"
+                    options={portStatusOptions}
+                    customOnChangeEvent={({ value }) => updateCRFieldHandler({ shapping: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="filterMonth"
                     options={portStatusOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
                 <Col span="6" className="textRight">
                   <label htmlFor="portsDir">
@@ -435,21 +602,33 @@ function CRForm() {
                   </label>
                 </Col>
                 <Col span="6">
-                  <Select
+                  <CustomDropDown
+                    customClassName="customDropdown"
+                    selectedValue={spam}
+                    name="spam"
+                    options={portStatusOptions}
+                    customOnChangeEvent={({ value }) => updateCRFieldHandler({ spam: parseInt(value) })}
+                  />{' '}
+                  {/* <Select
                     className="customDropdown"
                     defaultValue={null}
                     isClearable={false}
                     isSearchable={false}
                     name="filterMonth"
                     options={portStatusOptions}
-                  />{' '}
+                  />{' '} */}
                 </Col>
               </Row>
             </Col>
           </Row>
           <Row className="block">
             <Col span={24} className="textCenter">
-              <Button type="primary" className="filterButton">
+              <Button
+                type="primary"
+                className="filterButton submitButton"
+                disabled={submitButtonDisable}
+                onClick={() => sendCRHandler(props.setIsOpen, filters, getCRS)}
+              >
                 Submit{' '}
               </Button>
             </Col>
