@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { result } from 'lodash';
+import useAxios from 'axios-hooks';
 import { baseUrl } from './config';
 
 export function isUrlValid(url) {
@@ -20,6 +21,14 @@ export const getOptions = (url, aaxios, [value, label], dispatch, attri, dispatc
     dispatch(dispatchMethod({ [attri]: Options }));
   }
 };
+export const getOptionsByAxios = (url, method, obj) =>
+  axios({
+    method,
+    url,
+    baseURL: baseUrl,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    data: obj
+  });
 
 export const getWebCatOptions = (url, aaxios, [value, label, type], dispatch, attri, dispatchMethod) => {
   const Url = `${baseUrl}${url}`;

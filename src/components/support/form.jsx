@@ -476,14 +476,6 @@ function CRForm(props) {
                     options={fileOptions}
                     customOnChangeEvent={({ value }) => updateCurrentFileDetailsHandler({ type: parseInt(value) })}
                   />{' '}
-                  {/* <Select
-                    className="customDropdown"
-                    defaultValue={null}
-                    isClearable={false}
-                    isSearchable={false}
-                    name="webApllication"
-                    options={fileOptions}
-                  />{' '} */}
                 </Col>
 
                 <Col span="10">
@@ -494,14 +486,6 @@ function CRForm(props) {
                     options={portStatusOptions}
                     customOnChangeEvent={({ value }) => updateCurrentFileDetailsHandler({ status: parseInt(value) })}
                   />{' '}
-                  {/* <Select
-                    className="customDropdown"
-                    defaultValue={null}
-                    isClearable={false}
-                    isSearchable={false}
-                    name="filterMonth"
-                    options={portStatusOptions}
-                  />{' '} */}
                 </Col>
                 <Col span={3}>
                   {' '}
@@ -514,10 +498,6 @@ function CRForm(props) {
                   >
                     Add New{' '}
                   </Button>
-                  {/* <Button type="primary" icon={<DeleteOutlined />} className="filterButton deleteButton">
-                    {' '}
-                    Delete
-                  </Button> */}
                 </Col>
               </Row>
             </Col>

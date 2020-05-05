@@ -4,6 +4,7 @@ const d = new Date();
 const cmonth = d.getMonth();
 const cyear = d.getFullYear();
 const initialState = {
+  userId: 1,
   totalRows: 0,
   MAXROWS: 50,
   circuitId: '',
@@ -48,7 +49,8 @@ const initialState = {
   totalTickets: 0,
   showPopUp: false,
   showCRDetail: false,
-  selectedCRRowId: null
+  selectedCRRowId: null,
+  loading: false
 };
 export default function(state = initialState, action) {
   switch (action.type) {

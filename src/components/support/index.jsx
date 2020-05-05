@@ -3,14 +3,16 @@ import { Input, Button, Row, Col, Card } from 'antd';
 import { PlusCircleOutlined, ClearOutlined } from '@ant-design/icons';
 import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
-import Select from 'react-select';
 import moment from 'moment';
+import useAxios from 'axios-hooks';
 import ReactTableComponent from '../reactTable';
 import CustomBreadcrumb from '../breadcrumb';
+import CustomDropDown from '../customDropdown';
 import CRForm from './form';
 import './support.scss';
 import { updateCRField } from '../../actions/createCR';
 import ShowCRForm from './showForm';
+import { getCRS } from '../../helper';
 
 Modal.setAppElement('body');
 const customStyles = {
@@ -32,29 +34,29 @@ const { Search } = Input;
 // const yearOptions = [];
 // while()
 const yearOptions = [
-  { value: '2020', label: '2020' },
-  { value: '2019', label: '2019' },
-  { value: '2018', label: '2018' },
-  { value: '2017', label: '2017' }
+  { value: 2020, label: '2020' },
+  { value: 2019, label: '2019' },
+  { value: 2018, label: '2018' },
+  { value: 2017, label: '2017' }
 ];
 const monthOptions = [
-  { value: '0', label: 'Jan' },
-  { value: '1', label: 'Feb' },
-  { value: '2', label: 'Mar' },
-  { value: '3', label: 'Apr' },
-  { value: '4', label: 'May' },
-  { value: '5', label: 'Jun' },
-  { value: '6', label: 'Jul' },
-  { value: '7', label: 'Aug' },
-  { value: '8', label: 'Sep' },
-  { value: '9', label: 'Oct' },
-  { value: '10', label: 'Nov' },
-  { value: '11', label: 'Dec' }
+  { value: 1, label: 'Jan' },
+  { value: 2, label: 'Feb' },
+  { value: 3, label: 'Mar' },
+  { value: 4, label: 'Apr' },
+  { value: 5, label: 'May' },
+  { value: 6, label: 'Jun' },
+  { value: 7, label: 'Jul' },
+  { value: 8, label: 'Aug' },
+  { value: 9, label: 'Sep' },
+  { value: 10, label: 'Oct' },
+  { value: 11, label: 'Nov' },
+  { value: 12, label: 'Dec' }
 ];
-const statusOptions = [
-  { value: '0', label: 'Closed' },
-  { value: '1', label: 'Pending' }
-];
+// const statusOptions = [
+//   { value: '0', label: 'Closed' },
+//   { value: '1', label: 'Pending' }
+// ];
 const customDropdownStyles = {
   option: (provided, state) => ({
     ...provided,
@@ -140,6 +142,8 @@ function Support() {
   ];
   const [data, setData] = useState([]);
   const CR = useSelector(state => state.createCR);
+  console.log(333, CR.filters);
+
   useEffect(() => {
     constructCrs(CR.allCrs, CR.ticketStatusOptions, dispatch, setData, CR.circuitIds, onShowHandler);
   }, [CR.allCrs, CR.circuitIds, CR.ticketStatusOptions, dispatch]);
@@ -156,6 +160,18 @@ function Support() {
   function closeModal() {
     dispatch(updateCRField({ showPopUp: false, showCRDetail: false }));
   }
+  const updateFilters = obj => {
+    const uFilters = Object.assign({}, CR.filters, { ...obj });
+    dispatch(updateCRField({ filters: uFilters }));
+    console.log(222, uFilters);
+    const paramsF = {
+      user_id: uFilters.userId,
+      month: uFilters.sMonth,
+      year: uFilters.sYear,
+      status: uFilters.sstatus
+    };
+    getCRS('/cr/getcr/', useAxios, dispatch, paramsF, updateCRField);
+  };
 
   return (
     <>
@@ -199,46 +215,40 @@ function Support() {
                     <Row>
                       <Col span={6}>
                         <label htmlFor="year">Year</label>{' '}
-                        {/* <CustomDropDown
-                        customClassName="customDropdown circtuitDrop"
-                        selectedValue={circuitId}
-                        name="circuitIds"
-                        options={circuitIds}
-                        customOnChangeEvent={({ value }) => {
-                          dispatch(updateCircuitId(parseInt(value)));
-                        }}
-                      />{' '} */}
-                        <Select
-                          className="customDropdown"
-                          defaultValue={yearOptions[0]}
-                          // styles={customDropdownStyles}
-                          isClearable={false}
-                          isSearchable={false}
+                        <CustomDropDown
+                          customClassName="customDropdown"
+                          selectedValue={CR.filters.sYear}
                           name="filterYear"
                           options={yearOptions}
-                        />{' '}
+                          customOnChangeEvent={({ value }) => {
+                            updateFilters({ sYear: value });
+                          }}
+                        />
                       </Col>
                       <Col span={6}>
                         <label htmlFor="month">Month</label>
-                        <Select
-                          className="customDropdown"
-                          defaultValue={monthOptions[0]}
-                          isClearable={false}
-                          isSearchable={false}
+                        <CustomDropDown
+                          customClassName="customDropdown"
+                          selectedValue={CR.filters.sMonth}
                           name="filterMonth"
                           options={monthOptions}
-                        />{' '}
+                          customOnChangeEvent={({ value }) => {
+                            dispatch(updateCRField(value));
+                            updateFilters({ sMonth: value });
+                          }}
+                        />
                       </Col>
                       <Col span={6}>
                         <label htmlFor="status">Status</label>
-                        <Select
-                          className="customDropdown"
-                          defaultValue={statusOptions[0]}
-                          isClearable={false}
-                          isSearchable={false}
+                        <CustomDropDown
+                          customClassName="customDropdown"
+                          selectedValue={CR.filters.sstatus}
                           name="filterStatus"
-                          options={statusOptions}
-                        />{' '}
+                          options={CR.ticketStatusOptions}
+                          customOnChangeEvent={({ value }) => {
+                            updateFilters({ sstatus: value });
+                          }}
+                        />
                       </Col>
                       <Col span={6} className="buttonbar">
                         {/* <label htmlFor="buttons">&nbsp;</label> */}
